@@ -9,7 +9,6 @@ jobs:
     steps:
       - name: Checkout library repository
         uses: actions/checkout@v2
-<<<<<<< HEAD
 #      - name: Bump up tag version # tagのバージョンアップ
 #        id: bump_tag_version
 #        uses: anothrNick/github-tag-action@1.64.0
