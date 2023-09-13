@@ -39,8 +39,6 @@ publishing {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/ryu1/amazon-pay-api-sdk-java-wrapper")
-            println(System.getenv("GITHUB_PACKAGE_USER_NAME"))
-            println(System.getenv("GITHUB_PACKAGE_TOKEN"))
             credentials {
                 username = System.getenv("GITHUB_PACKAGE_USER_NAME")
                 password = System.getenv("GITHUB_PACKAGE_TOKEN")
