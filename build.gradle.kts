@@ -29,8 +29,8 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
 //            groupId = "com.amazon.pay.api.wrapper"
-            artifactId = "amazon-pay-api-sdk-java-wrapper"
-            version = System.getenv("RELEASE_VERSION")
+//            artifactId = "amazon-pay-api-sdk-java-wrapper"
+//            version = System.getenv("RELEASE_VERSION")
 
             from(components["java"])
         }
