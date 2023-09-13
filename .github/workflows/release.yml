@@ -6,6 +6,8 @@ on:
 jobs:
   publish-library:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Checkout library repository
         uses: actions/checkout@v2
@@ -20,6 +22,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
+#      - name: test secrets
+#        run: echo secret "${{secrets.GITHUB_TOKEN }}" | sed 's/./& /g'
       - name: Execute gradle command to publish
         env: # libraryモジュールのgradleファイル内で利用する環境変数の値を設定
 #          RELEASE_VERSION: ${{ steps.bump_tag_version.outputs.new_tag }}
