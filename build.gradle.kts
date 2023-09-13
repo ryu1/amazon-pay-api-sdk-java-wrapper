@@ -28,7 +28,7 @@ dependencies {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.amazon.pay.api.wrapper"
+//            groupId = "com.amazon.pay.api.wrapper"
             artifactId = "amazon-pay-api-sdk-java-wrapper"
             version = System.getenv("RELEASE_VERSION")
 
@@ -46,28 +46,6 @@ publishing {
         }
     }
 }
-
-//publishing {
-//    repositories {
-//        maven {
-//            name = "GitHubPackages"
-//            url = uri("https://maven.pkg.github.com/ryu1/paypayopa-sdk-java")
-//            credentials {
-//                username = project.hasProperty("GITHUB_USER") ? GITHUB_USER : ''
-//                password = project.hasProperty("GITHUB_TOKEN") ? GITHUB_TOKEN : ''
-//            }
-//        }
-//        if (isDevBuild) {
-//            mavenLocal()
-//        }else{
-//            publications {
-//                gpr(MavenPublication) {
-//                    from(components.java)
-//                }
-//            }
-//        }
-//    }
-//}
 
 tasks.test {
     useJUnitPlatform()
