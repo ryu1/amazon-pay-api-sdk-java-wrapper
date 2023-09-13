@@ -16,6 +16,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_BRANCHES: main
+          INITIAL_VERSION: 1.0.0
       - name: Prepare for gradle command execution
         uses: actions/setup-java@v1
         with:
