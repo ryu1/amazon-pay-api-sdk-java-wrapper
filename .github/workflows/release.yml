@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout library repository
         uses: actions/checkout@v2
-      - name: Bump up tag version # tagのバージョンアップ
+      - name: Bump up tag version
         id: bump_tag_version
         uses: anothrNick/github-tag-action@1.64.0
         env:
@@ -23,10 +23,10 @@ jobs:
         with:
           java-version: 8
       - name: Execute gradle command to publish
-        env: # libraryモジュールのgradleファイル内で利用する環境変数の値を設定
+        env:
           RELEASE_VERSION: ${{ steps.bump_tag_version.outputs.new_tag }}
           GITHUB_PACKAGE_USER_NAME: ryu1
           GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: publish # maven-publishのコマンドを実行
+          arguments: publish
