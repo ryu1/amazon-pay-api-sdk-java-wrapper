@@ -23,7 +23,7 @@ jobs:
       - name: Execute gradle command to publish
         env: # libraryモジュールのgradleファイル内で利用する環境変数の値を設定
 #          RELEASE_VERSION: ${{ steps.bump_tag_version.outputs.new_tag }}
-          RELEASE_VERSION: 1.0.0
+          RELEASE_VERSION: 1.0.1
           GITHUB_PACKAGE_USER_NAME: ryu1
           GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: eskatos/gradle-command-action@v1
