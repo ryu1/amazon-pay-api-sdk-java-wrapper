@@ -1,0 +1,29 @@
+name: Release library module
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish-library:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout library repository
+        uses: actions/checkout@v2
+      - name: Bump up tag version # tagのバージョンアップ
+        id: bump_tag_version
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_BRANCHES: main
+      - name: Prepare for gradle command execution
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - name: Execute gradle command to publish
+        env: # libraryモジュールのgradleファイル内で利用する環境変数の値を設定
+          RELEASE_VERSION: ${{ steps.bump_tag_version.outputs.new_tag }}
+          GITHUB_PACKAGE_USER_NAME: ryu1
+          GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: library:assemble library:publish # maven-publishのコマンドを実行
