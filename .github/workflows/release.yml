@@ -6,8 +6,7 @@ on:
 jobs:
   publish-library:
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
+    permissions: write-all
     steps:
       - name: Checkout library repository
         uses: actions/checkout@v2
