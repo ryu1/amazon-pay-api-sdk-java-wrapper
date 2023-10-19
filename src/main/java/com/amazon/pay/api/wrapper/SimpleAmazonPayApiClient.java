@@ -216,7 +216,7 @@ public class SimpleAmazonPayApiClient {
         JSONObject payload = new JSONObject();
         payload.put("chargePermissionId", chargePermissionId);
         payload.put("chargeAmount", chargeAmount);
-        payload.put("captureNow", true);
+        payload.put("chargeInitiator", Charge.ChargeInitiator.CITU.toString());
         payload.put("softDescriptor", "AMZ * <SELLER_NAME> pay.amazon.co.jp");
         payload.put("canHandlePendingAuthorization", false);
 

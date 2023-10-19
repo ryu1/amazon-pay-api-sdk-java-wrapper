@@ -32,6 +32,11 @@ public class Charge implements Serializable {
     private Price convertedAmount;
     private Double conversionRate;
     private String releaseEnvironment;
+    private ChargeInitiator chargeInitiator;
+    private Channel channel;
+
+    public Charge() {
+    }
 
     public static Charge createObject(JSONObject jsonObject) {
         JsonConfig config = new JsonConfig();
@@ -53,6 +58,8 @@ public class Charge implements Serializable {
         mr.registerMorpher(new DateMorpher(new String[]{"yyyyMMdd't'HHmmss'z'"}));
         mr.registerMorpher(new CustomEnumMorpher(State.class));
         mr.registerMorpher(new CustomEnumMorpher(ReasonCode.class));
+        mr.registerMorpher(new CustomEnumMorpher(ChargeInitiator.class));
+        mr.registerMorpher(new CustomEnumMorpher(Channel.class));
 
         // https://www.doraxdora.com/blog/2019/04/24/post-8324/
         Charge charge = (Charge) JSONObject.toBean(jsonObject, config);
@@ -79,6 +86,8 @@ public class Charge implements Serializable {
                 ", convertedAmount=" + convertedAmount +
                 ", conversionRate=" + conversionRate +
                 ", releaseEnvironment='" + releaseEnvironment + '\'' +
+                ", chargeInitiator=" + chargeInitiator +
+                ", channel='" + channel + '\'' +
                 '}';
     }
 
@@ -218,6 +227,22 @@ public class Charge implements Serializable {
         this.releaseEnvironment = releaseEnvironment;
     }
 
+    public ChargeInitiator getChargeInitiator() {
+        return chargeInitiator;
+    }
+
+    public void setChargeInitiator(ChargeInitiator chargeInitiator) {
+        this.chargeInitiator = chargeInitiator;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
+
 
     public enum State {
         AUTHORIZATION_INITIATED("AuthorizationInitiated"),
@@ -290,4 +315,65 @@ public class Charge implements Serializable {
         }
     }
 
+    public enum ChargeInitiator {
+        CITU("CITU"),
+        MITU("MITU"),
+        CITR("CITR"),
+        MITR("MITR"),
+        UNKNOWN("Unknown");
+
+        private final String name;
+
+        ChargeInitiator(final String name) {
+            this.name = name;
+        }
+
+        public static Charge.ChargeInitiator enumOf(final String name) {
+            for (Charge.ChargeInitiator value : values()) {
+                if (StringUtils.equals(value.getName(), name)) {
+                    return value;
+                }
+            }
+            return UNKNOWN;
+        }
+
+        public static Charge.ChargeInitiator fromString(String string) {
+            return Charge.ChargeInitiator.enumOf(string);
+        }
+
+        private String getName() {
+            return this.name;
+        }
+    }
+
+    public enum Channel {
+        WEB("Web"),
+        APP("App"),
+        FIRETV("Firetv"),
+        OFFLINE("Offline"),
+        UNKNOWN("Unknown");
+
+        private final String name;
+
+        Channel(final String name) {
+            this.name = name;
+        }
+
+        public static Charge.Channel enumOf(final String name) {
+            for (Charge.Channel value : values()) {
+                if (StringUtils.equals(value.getName(), name)) {
+                    return value;
+                }
+            }
+            return UNKNOWN;
+        }
+
+        public static Charge.Channel fromString(String string) {
+            return Charge.Channel.enumOf(string);
+        }
+
+        private String getName() {
+            return this.name;
+        }
+    }
 }
