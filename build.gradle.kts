@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("maven-publish")
+    `java-library`
 }
 
 group = "com.amazon.pay.api.wrapper"
@@ -18,8 +19,8 @@ repositories {
 }
 
 dependencies {
-    implementation("software.amazon.pay:amazon-pay-api-sdk-java:2.3.3")
-    implementation("org.apache.commons:commons-lang3:3.13.0")
+    api("software.amazon.pay:amazon-pay-api-sdk-java:2.3.3")
+    api("org.apache.commons:commons-lang3:3.13.0")
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
