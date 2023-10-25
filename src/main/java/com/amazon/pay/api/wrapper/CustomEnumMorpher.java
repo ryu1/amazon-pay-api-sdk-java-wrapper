@@ -40,10 +40,10 @@ public class CustomEnumMorpher extends EnumMorpher {
         if (morphsTo() == Charge.ReasonCode.class) {
             return Charge.ReasonCode.fromString((String) value);
         }
-        if (morphsTo() == Charge.ReasonCode.class) {
+        if (morphsTo() == Charge.ChargeInitiator.class) {
             return Charge.ChargeInitiator.fromString((String) value);
         }
-        if (morphsTo() == Charge.ReasonCode.class) {
+        if (morphsTo() == Charge.Channel.class) {
             return Charge.Channel.fromString((String) value);
         }
 
