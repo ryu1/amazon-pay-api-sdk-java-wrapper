@@ -20,10 +20,11 @@ import java.util.UUID;
 /**
  * SimpleAmazonPayApiClient
  * <p>
- * https://github.com/amzn/amazon-pay-api-sdk-java
+ * <a href="https://github.com/amzn/amazon-pay-api-sdk-java">amazon-pay-api-sdk-java</a>
  *
  * @author ishitsuka
  */
+@SuppressWarnings("unused")
 public class SimpleAmazonPayApiClient {
 
     private final Log log = LogFactory.getLog(this.getClass());
@@ -37,11 +38,10 @@ public class SimpleAmazonPayApiClient {
 
     private static PayConfiguration createPayConfiguration(final String privateKeyFilePath, final String publicKeyId,
                                                            final String environment) throws AmazonPayClientException, IOException {
-        PayConfiguration configuration = new PayConfiguration()
+        return new PayConfiguration()
                 .setPublicKeyId(publicKeyId).setRegion(Region.JP)
                 .setPrivateKey(new String(Files.readAllBytes(Paths.get(privateKeyFilePath))).toCharArray())
                 .setEnvironment(Environment.valueOf(environment));
-        return configuration;
     }
 
     private static WebstoreClient getWebstoreClient(final String privateKeyFilePath, final String publicKeyId, final String environment)
@@ -52,22 +52,24 @@ public class SimpleAmazonPayApiClient {
     /**
      * Get Refund
      * <p>
-     * https://developer.amazon.com/ja/docs/amazon-pay-api-v2/refund.html
+     * <a href="https://developer.amazon.com/ja/docs/amazon-pay-api-v2/refund.html">refund</a>
      *
-     * @param refundId
+     * @param refundId refundId
      * @return refund
      * @throws AmazonPayClientException
-     * @throws ErrorStatusCodeRecievedException
+     * @throws ErrorStatusCodeReceivedException
      */
-    public Refund getRefund(final String refundId) throws AmazonPayClientException, ErrorStatusCodeRecievedException {
-        AmazonPayResponse res = client.getRefund(refundId);
-        log.debug(res);
-        JSONObject json = res.getResponse();
-
-        if (res.isSuccess()) {
+    public Refund getRefund(final String refundId) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
+        AmazonPayResponse response = client.getRefund(refundId);
+        //noinspection DuplicatedCode
+        log.debug(response);
+        JSONObject json = response.getResponse();
+        if (response.isSuccess()) {
             return Refund.createObject(json);
         }
-        throw new ErrorStatusCodeRecievedException(res.getStatus());
+        final String reasonCode = (String)json.get("reasonCode");
+        final String message = (String)json.get("message");
+        throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
     /**
@@ -75,13 +77,13 @@ public class SimpleAmazonPayApiClient {
      * <p>
      * https://developer.amazon.com/ja/docs/amazon-pay-api-v2/refund.html#create-refund
      *
-     * @param chargeId
-     * @param amount
+     * @param chargeId chargeId
+     * @param amount amount
      * @return Refund
      * @throws AmazonPayClientException
-     * @throws ErrorStatusCodeRecievedException
+     * @throws ErrorStatusCodeReceivedException
      */
-    public Refund createRefund(final String chargeId, final String amount) throws AmazonPayClientException, ErrorStatusCodeRecievedException {
+    public Refund createRefund(final String chargeId, final String amount) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
         AmazonPayResponse response = null;
 
         JSONObject payload = new JSONObject();
@@ -95,18 +97,16 @@ public class SimpleAmazonPayApiClient {
         Map<String, String> header = new HashMap<String, String>();
         header.put("x-amz-pay-idempotency-key", UUID.randomUUID().toString().replace("-", ""));
 
-        try {
-            response = client.createRefund(payload, header);
-            log.debug(response);
-        } catch (AmazonPayClientException e) {
-            log.warn(e);
-            e.printStackTrace();
-        }
+        response = client.createRefund(payload, header);
+        //noinspection DuplicatedCode
+        log.debug(response);
+        JSONObject json = response.getResponse();
         if (response.isSuccess()) {
-            JSONObject json = response.getResponse();
             return Refund.createObject(json);
         }
-        throw new ErrorStatusCodeRecievedException(response.getStatus());
+        final String reasonCode = (String)json.get("reasonCode");
+        final String message = (String)json.get("message");
+        throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
     /**
@@ -114,20 +114,22 @@ public class SimpleAmazonPayApiClient {
      * <p>
      * https://developer.amazon.com/ja/docs/amazon-pay-api-v2/checkout-session.html#get-checkout-session
      *
-     * @param checkoutSessionId
+     * @param checkoutSessionId checkoutSessionId
      * @return checkoutSession
      * @throws AmazonPayClientException
-     * @throws ErrorStatusCodeRecievedException
+     * @throws ErrorStatusCodeReceivedException
      */
-    public CheckoutSession getCheckoutSession(final String checkoutSessionId) throws AmazonPayClientException, ErrorStatusCodeRecievedException {
+    public CheckoutSession getCheckoutSession(final String checkoutSessionId) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
         AmazonPayResponse response = client.getCheckoutSession(checkoutSessionId);
+        //noinspection DuplicatedCode
         log.debug(response);
+        JSONObject json = response.getResponse();
         if (response.isSuccess()) {
-            JSONObject json = response.getResponse();
             return CheckoutSession.createObject(json);
         }
-
-        throw new ErrorStatusCodeRecievedException(response.getStatus());
+        final String reasonCode = (String)json.get("reasonCode");
+        final String message = (String)json.get("message");
+        throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
 
@@ -136,16 +138,16 @@ public class SimpleAmazonPayApiClient {
      * <p>
      * https://developer.amazon.com/ja/docs/amazon-pay-api-v2/checkout-session.html#update-checkout-session
      *
-     * @param checkoutSessionId
-     * @param merchantReferenceId
-     * @param amount
-     * @param checkoutResultReturnUrl
+     * @param checkoutSessionId checkoutSessionId
+     * @param merchantReferenceId merchantReferenceId
+     * @param amount amount
+     * @param checkoutResultReturnUrl checkoutResultReturnUrl
      * @return checkoutSession
      * @throws AmazonPayClientException
-     * @throws ErrorStatusCodeRecievedException
+     * @throws ErrorStatusCodeReceivedException
      */
     public CheckoutSession updateCheckoutSession(final String checkoutSessionId, final String merchantReferenceId,
-                                                 final String amount, final String checkoutResultReturnUrl) throws AmazonPayClientException, ErrorStatusCodeRecievedException {
+                                                 final String amount, final String checkoutResultReturnUrl) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
 
         AmazonPayResponse response = null;
         JSONObject payload = new JSONObject();
@@ -167,14 +169,15 @@ public class SimpleAmazonPayApiClient {
         payload.put("merchantMetadata", merchantMetadata);
 
         response = client.updateCheckoutSession(checkoutSessionId, payload);
+        //noinspection DuplicatedCode
         log.debug(response);
-
+        JSONObject json = response.getResponse();
         if (response.isSuccess()) {
-            JSONObject json = response.getResponse();
             return CheckoutSession.createObject(json);
         }
-
-        throw new ErrorStatusCodeRecievedException(response.getStatus());
+        final String reasonCode = (String)json.get("reasonCode");
+        final String message = (String)json.get("message");
+        throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
     /**
@@ -186,9 +189,9 @@ public class SimpleAmazonPayApiClient {
      * @param amount
      * @return checkoutSession
      * @throws AmazonPayClientException
-     * @throws ErrorStatusCodeRecievedException
+     * @throws ErrorStatusCodeReceivedException
      */
-    public CheckoutSession completeCheckoutSession(final String checkoutSessionId, final String amount) throws AmazonPayClientException, ErrorStatusCodeRecievedException {
+    public CheckoutSession completeCheckoutSession(final String checkoutSessionId, final String amount) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
         AmazonPayResponse response = null;
         JSONObject payload = new JSONObject();
 
@@ -198,17 +201,19 @@ public class SimpleAmazonPayApiClient {
         payload.put("chargeAmount", chargeAmount);
 
         response = client.completeCheckoutSession(checkoutSessionId, payload);
+        //noinspection DuplicatedCode
         log.debug(response);
 
+        JSONObject json = response.getResponse();
         if (response.isSuccess()) {
-            JSONObject json = response.getResponse();
             return CheckoutSession.createObject(json);
         }
-
-        throw new ErrorStatusCodeRecievedException(response.getStatus());
+        final String reasonCode = (String)json.get("reasonCode");
+        final String message = (String)json.get("message");
+        throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
-    public Charge createCharge(final String chargePermissionId, final String amount) throws AmazonPayClientException, ErrorStatusCodeRecievedException {
+    public Charge createCharge(final String chargePermissionId, final String amount) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
         JSONObject chargeAmount = new JSONObject();
         chargeAmount.put("amount", amount);
         chargeAmount.put("currencyCode", "JPY");
@@ -217,30 +222,35 @@ public class SimpleAmazonPayApiClient {
         payload.put("chargePermissionId", chargePermissionId);
         payload.put("chargeAmount", chargeAmount);
         payload.put("chargeInitiator", Charge.ChargeInitiator.CITU.toString());
-        payload.put("softDescriptor", "AMZ * <SELLER_NAME> pay.amazon.co.jp");
+        //payload.put("softDescriptor", "AMZ * <SELLER_NAME> pay.amazon.co.jp");
         payload.put("canHandlePendingAuthorization", false);
 
         Map<String, String> header = new HashMap<String, String>();
         header.put("x-amz-pay-idempotency-key", UUID.randomUUID().toString().replace("-", ""));
 
         AmazonPayResponse response = client.createCharge(payload, header);
+        //noinspection DuplicatedCode
         log.debug(response);
+        JSONObject json = response.getResponse();
         if (response.isSuccess()) {
-            JSONObject json = response.getResponse();
             return Charge.createObject(json);
         }
-        throw new ErrorStatusCodeRecievedException(response.getStatus());
+        final String reasonCode = (String)json.get("reasonCode");
+        final String message = (String)json.get("message");
+        throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
-    public Charge getCharge(final String chargeId) throws AmazonPayClientException, ErrorStatusCodeRecievedException {
+    public Charge getCharge(final String chargeId) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
         AmazonPayResponse response = client.getCharge(chargeId);
+        //noinspection DuplicatedCode
         log.debug(response);
+        JSONObject json = response.getResponse();
         if (response.isSuccess()) {
-            JSONObject json = response.getResponse();
             return Charge.createObject(json);
         }
-
-        throw new ErrorStatusCodeRecievedException(response.getStatus());
+        final String reasonCode = (String)json.get("reasonCode");
+        final String message = (String)json.get("message");
+        throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
 }
