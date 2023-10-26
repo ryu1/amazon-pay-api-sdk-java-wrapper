@@ -5,6 +5,7 @@ import net.sf.ezmorph.object.DateMorpher;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.JSONUtils;
+import net.sf.json.util.PropertySetStrategy;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -50,6 +51,7 @@ public class Charge implements Serializable {
         classMap.put("merchantMetadata", MerchantMetadata.class);
         classMap.put("statusDetails", StatusDetails.class);
         classMap.put("convertedAmount", Price.class);
+        config.setPropertySetStrategy(new PropertyStrategyWrapper(PropertySetStrategy.DEFAULT));
         config.setClassMap(classMap);
         config.setRootClass(Charge.class);
 

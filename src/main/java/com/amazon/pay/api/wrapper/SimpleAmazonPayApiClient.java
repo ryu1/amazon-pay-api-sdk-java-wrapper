@@ -213,13 +213,14 @@ public class SimpleAmazonPayApiClient {
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
-    public Charge createCharge(final String chargePermissionId, final String amount) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
+    public Charge createCharge(final String chargePermissionId, final String amount, final Boolean captureNow) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
         JSONObject chargeAmount = new JSONObject();
         chargeAmount.put("amount", amount);
         chargeAmount.put("currencyCode", "JPY");
 
         JSONObject payload = new JSONObject();
         payload.put("chargePermissionId", chargePermissionId);
+        payload.put("captureNow", captureNow);
         payload.put("chargeAmount", chargeAmount);
         payload.put("chargeInitiator", Charge.ChargeInitiator.CITU.toString());
         //payload.put("softDescriptor", "AMZ * <SELLER_NAME> pay.amazon.co.jp");

@@ -19,10 +19,9 @@ public class PropertyStrategyWrapper extends PropertySetStrategy {
         try {
             original.setProperty(o, string, o1);
         } catch (Exception ex) {
-            //ignore
-            if (!"primeMembershipTypes".equals(string)) {
-                log.warn("Unknown property: " + string, ex);
-            }
+            //ignore properties
+            log.warn("Unknown property: " + string);
+            log.debug("Unknown property: " + string, ex);
         }
     }
 }

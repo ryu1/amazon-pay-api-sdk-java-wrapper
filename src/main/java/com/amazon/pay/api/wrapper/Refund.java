@@ -5,6 +5,7 @@ import net.sf.ezmorph.object.DateMorpher;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.JSONUtils;
+import net.sf.json.util.PropertySetStrategy;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class Refund implements Serializable {
         Map<String, Class> classMap = new HashMap<>();
         classMap.put("refundAmount", RefundAmount.class);
         classMap.put("statusDetails", StatusDetails.class);
+        config.setPropertySetStrategy(new PropertyStrategyWrapper(PropertySetStrategy.DEFAULT));
         config.setClassMap(classMap);
         config.setRootClass(Refund.class);
 
