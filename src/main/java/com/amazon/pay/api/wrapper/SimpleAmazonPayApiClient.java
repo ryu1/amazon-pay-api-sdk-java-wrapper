@@ -67,8 +67,8 @@ public class SimpleAmazonPayApiClient {
         if (response.isSuccess()) {
             return Refund.createObject(json);
         }
-        final String reasonCode = (String)json.get("reasonCode");
-        final String message = (String)json.get("message");
+        final String reasonCode = (String) json.get("reasonCode");
+        final String message = (String) json.get("message");
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
@@ -78,7 +78,7 @@ public class SimpleAmazonPayApiClient {
      * https://developer.amazon.com/ja/docs/amazon-pay-api-v2/refund.html#create-refund
      *
      * @param chargeId chargeId
-     * @param amount amount
+     * @param amount   amount
      * @return Refund
      * @throws AmazonPayClientException
      * @throws ErrorStatusCodeReceivedException
@@ -104,8 +104,8 @@ public class SimpleAmazonPayApiClient {
         if (response.isSuccess()) {
             return Refund.createObject(json);
         }
-        final String reasonCode = (String)json.get("reasonCode");
-        final String message = (String)json.get("message");
+        final String reasonCode = (String) json.get("reasonCode");
+        final String message = (String) json.get("message");
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
@@ -127,8 +127,8 @@ public class SimpleAmazonPayApiClient {
         if (response.isSuccess()) {
             return CheckoutSession.createObject(json);
         }
-        final String reasonCode = (String)json.get("reasonCode");
-        final String message = (String)json.get("message");
+        final String reasonCode = (String) json.get("reasonCode");
+        final String message = (String) json.get("message");
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
@@ -138,9 +138,9 @@ public class SimpleAmazonPayApiClient {
      * <p>
      * https://developer.amazon.com/ja/docs/amazon-pay-api-v2/checkout-session.html#update-checkout-session
      *
-     * @param checkoutSessionId checkoutSessionId
-     * @param merchantReferenceId merchantReferenceId
-     * @param amount amount
+     * @param checkoutSessionId       checkoutSessionId
+     * @param merchantReferenceId     merchantReferenceId
+     * @param amount                  amount
      * @param checkoutResultReturnUrl checkoutResultReturnUrl
      * @return checkoutSession
      * @throws AmazonPayClientException
@@ -175,8 +175,8 @@ public class SimpleAmazonPayApiClient {
         if (response.isSuccess()) {
             return CheckoutSession.createObject(json);
         }
-        final String reasonCode = (String)json.get("reasonCode");
-        final String message = (String)json.get("message");
+        final String reasonCode = (String) json.get("reasonCode");
+        final String message = (String) json.get("message");
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
@@ -208,8 +208,8 @@ public class SimpleAmazonPayApiClient {
         if (response.isSuccess()) {
             return CheckoutSession.createObject(json);
         }
-        final String reasonCode = (String)json.get("reasonCode");
-        final String message = (String)json.get("message");
+        final String reasonCode = (String) json.get("reasonCode");
+        final String message = (String) json.get("message");
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
@@ -236,8 +236,8 @@ public class SimpleAmazonPayApiClient {
         if (response.isSuccess()) {
             return Charge.createObject(json);
         }
-        final String reasonCode = (String)json.get("reasonCode");
-        final String message = (String)json.get("message");
+        final String reasonCode = (String) json.get("reasonCode");
+        final String message = (String) json.get("message");
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
@@ -249,8 +249,8 @@ public class SimpleAmazonPayApiClient {
         if (response.isSuccess()) {
             return Charge.createObject(json);
         }
-        final String reasonCode = (String)json.get("reasonCode");
-        final String message = (String)json.get("message");
+        final String reasonCode = (String) json.get("reasonCode");
+        final String message = (String) json.get("message");
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 

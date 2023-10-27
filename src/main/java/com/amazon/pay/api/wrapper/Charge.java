@@ -29,7 +29,7 @@ public class Charge implements Serializable {
     private Date expirationTimestamp;
     private MerchantMetadata merchantMetadata;
     private String platformId;
-    private StatusDetails<Charge.ReasonCode, Charge.State> statusDetails;
+    private StatusDetails statusDetails;
     private Price convertedAmount;
     private Double conversionRate;
     private String releaseEnvironment;
@@ -197,11 +197,11 @@ public class Charge implements Serializable {
         this.platformId = platformId;
     }
 
-    public StatusDetails<ReasonCode, State> getStatusDetails() {
+    public StatusDetails getStatusDetails() {
         return statusDetails;
     }
 
-    public void setStatusDetails(StatusDetails<ReasonCode, State> statusDetails) {
+    public void setStatusDetails(StatusDetails statusDetails) {
         this.statusDetails = statusDetails;
     }
 
@@ -377,5 +377,8 @@ public class Charge implements Serializable {
         private String getName() {
             return this.name;
         }
+    }
+
+    public static class StatusDetails extends com.amazon.pay.api.wrapper.StatusDetails<ReasonCode, State> {
     }
 }

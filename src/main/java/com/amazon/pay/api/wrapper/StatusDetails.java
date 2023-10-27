@@ -3,7 +3,7 @@ package com.amazon.pay.api.wrapper;
 import java.io.Serializable;
 import java.util.Date;
 
-public class StatusDetails<R, S> implements Serializable {
+public abstract class StatusDetails<R, S> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Date lastUpdatedTimestamp;

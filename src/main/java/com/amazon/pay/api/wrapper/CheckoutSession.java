@@ -37,7 +37,7 @@ public class CheckoutSession implements Serializable {
     private RecurringMetadata recurringMetadata;
     private String ReleaseEnvironment;
     private Address shippingAddress;
-    private StatusDetails<CheckoutSession.ReasonCode, CheckoutSession.State> statusDetails;
+    private StatusDetails statusDetails;
     private String storeId;
     private String supplementaryData;
     private WebCheckoutDetails webCheckoutDetails;
@@ -256,11 +256,11 @@ public class CheckoutSession implements Serializable {
         this.shippingAddress = shippingAddress;
     }
 
-    public StatusDetails<CheckoutSession.ReasonCode, CheckoutSession.State> getStatusDetails() {
+    public StatusDetails getStatusDetails() {
         return statusDetails;
     }
 
-    public void setStatusDetails(StatusDetails<CheckoutSession.ReasonCode, CheckoutSession.State> statusDetails) {
+    public void setStatusDetails(StatusDetails statusDetails) {
         this.statusDetails = statusDetails;
     }
 
@@ -1057,6 +1057,9 @@ public class CheckoutSession implements Serializable {
                     + checkoutMode + "]";
         }
 
+    }
+
+    public static class StatusDetails extends com.amazon.pay.api.wrapper.StatusDetails<CheckoutSession.ReasonCode, CheckoutSession.State> {
     }
 
 }

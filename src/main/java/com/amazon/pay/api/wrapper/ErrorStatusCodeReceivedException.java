@@ -4,6 +4,25 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ErrorStatusCodeReceivedException extends Exception {
 
+    private static final long serialVersionUID = 1L;
+    private final Integer errorStatusCode;
+    private final ReasonCode reasonCode;
+    private final String message;
+    public ErrorStatusCodeReceivedException(final Integer errorStatusCode, final String reasonCode, final String message) {
+        super(String.format("status code: %d, reasonCode: %s, message: %s", errorStatusCode, reasonCode, message));
+        this.errorStatusCode = errorStatusCode;
+        this.reasonCode = ReasonCode.fromString(reasonCode);
+        this.message = message;
+    }
+
+    public Integer getErrorStatusCode() {
+        return errorStatusCode;
+    }
+
+    public ReasonCode getReasonCode() {
+        return reasonCode;
+    }
+
     public enum ReasonCode {
         TRANSACTION_AMOUNT_EXCEEDED("TransactionAmountExceeded"),
         PERIODIC_AMOUNT_EXCEEDED("PeriodicAmountExceeded"),
@@ -70,27 +89,6 @@ public class ErrorStatusCodeReceivedException extends Exception {
         private String getName() {
             return this.name;
         }
-    }
-
-    private static final long serialVersionUID = 1L;
-    private final Integer errorStatusCode;
-    private final ReasonCode reasonCode;
-    private final String message;
-
-
-    public ErrorStatusCodeReceivedException(final Integer errorStatusCode, final String reasonCode, final String message) {
-        super(String.format("status code: %d, reasonCode: %s, message: %s", errorStatusCode, reasonCode, message));
-        this.errorStatusCode = errorStatusCode;
-        this.reasonCode = ReasonCode.fromString(reasonCode);
-        this.message = message;
-    }
-
-    public Integer getErrorStatusCode() {
-        return errorStatusCode;
-    }
-
-    public ReasonCode getReasonCode() {
-        return reasonCode;
     }
 
 }
