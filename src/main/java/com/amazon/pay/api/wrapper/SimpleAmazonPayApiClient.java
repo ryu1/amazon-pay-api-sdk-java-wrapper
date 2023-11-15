@@ -7,6 +7,7 @@ import com.amazon.pay.api.exceptions.AmazonPayClientException;
 import com.amazon.pay.api.types.Environment;
 import com.amazon.pay.api.types.Region;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -31,9 +32,12 @@ public class SimpleAmazonPayApiClient {
 
     private final WebstoreClient client;
 
+    private final Environment environment;
+
     public SimpleAmazonPayApiClient(final String privateKeyFilePath, final String publicKeyId, final String environment)
             throws AmazonPayClientException, IOException {
-        client = getWebstoreClient(privateKeyFilePath, publicKeyId, environment);
+        this.environment = Environment.valueOf(environment);
+        client = getWebstoreClient(privateKeyFilePath, publicKeyId, this.environment.name());
     }
 
     private static PayConfiguration createPayConfiguration(final String privateKeyFilePath, final String publicKeyId,
@@ -213,7 +217,7 @@ public class SimpleAmazonPayApiClient {
         throw new ErrorStatusCodeReceivedException(response.getStatus(), reasonCode, message);
     }
 
-    public Charge createCharge(final String chargePermissionId, final String amount, final String merchantReferenceId ,final Boolean captureNow) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
+    public Charge createCharge(final String chargePermissionId, final String amount, final String merchantReferenceId ,final Boolean captureNow, final String simulationCode) throws AmazonPayClientException, ErrorStatusCodeReceivedException {
         JSONObject chargeAmount = new JSONObject();
         chargeAmount.put("amount", amount);
         chargeAmount.put("currencyCode", "JPY");
@@ -231,6 +235,11 @@ public class SimpleAmazonPayApiClient {
 
         Map<String, String> header = new HashMap<String, String>();
         header.put("x-amz-pay-idempotency-key", UUID.randomUUID().toString().replace("-", ""));
+
+        if (environment == Environment.SANDBOX && !StringUtils.isBlank(simulationCode)) {
+            header.put("x-amz-simulation-code", simulationCode);
+            log.debug(String.format("x-amz-simulation-code is %s.", simulationCode));
+        }
 
         AmazonPayResponse response = client.createCharge(payload, header);
         //noinspection DuplicatedCode
