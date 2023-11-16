@@ -237,8 +237,8 @@ public class SimpleAmazonPayApiClient {
         header.put("x-amz-pay-idempotency-key", UUID.randomUUID().toString().replace("-", ""));
 
         if (environment == Environment.SANDBOX && !StringUtils.isBlank(simulationCode)) {
-            header.put("x-amz-simulation-code", simulationCode);
-            log.debug(String.format("x-amz-simulation-code is %s.", simulationCode));
+            header.put("x-amz-pay-simulation-code", simulationCode);
+            log.debug(String.format("x-amz-pay-simulation-code is %s.", simulationCode));
         }
 
         AmazonPayResponse response = client.createCharge(payload, header);
